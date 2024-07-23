@@ -10,31 +10,6 @@ funcs.getCurrentSpell = function()
 end
 
 --------------------------------------------------------------------
-funcs.castNextSpell = function(spellType, targetModifier)
-    local spellToCast = consts.ninEleSpells[spellIdx].spellName .. ": "
-
-    if (spellType == nil) then
-        print(chat.header(addon.name):append(chat.message('No spell type specified.')));
-        return
-    end
-    spellType = string.lower(spellType)
-
-    if (spellType == "ni") or (spellType == "ichi") or (spellType == "san") then
-        spellToCast = spellToCast .. spellType;
-    else
-        print(chat.header(addon.name):append(chat.message('No spell type:' .. spellType)));
-        return
-    end
-
-    if (targetModifier == nil) then
-        targetModifier = "<t>";
-    end
-
-    command = '/ma "' .. spellToCast .. '" ' .. targetModifier;
-    AshitaCore:GetChatManager():QueueCommand(1, command);
-end
-
---------------------------------------------------------------------
 funcs.isNinjutsu = function(spellId)
     for idx, spell in pairs(consts.ninEleSpells) do
         if (spellId == spell.spellId) or 
