@@ -23,7 +23,7 @@
 addon.author   = 'Mathemagic';
 addon.name     = 'ninjaTool';
 addon.desc     = 'Ninja spell timers & tool counter.';
-addon.version  = '1.0';
+addon.version  = '1.1';
 
 require ('common');
 local gui = require('gui');
@@ -60,6 +60,7 @@ local defaultConfig = T{
 	components = T{
         showSpellWindow  = T{true};
         showSpellTools   = T{true};
+        showToolNames    = T{false};
         showRecastIchi   = T{true};
         showRecastNi     = T{true};
         showRecastSan    = T{false};

@@ -105,13 +105,23 @@ function renderNinjutsuWindow(config)
         if (config.settings.components.showRecastIchi[1] or 
             config.settings.components.showRecastNi[1] or
             config.settings.components.showRecastSan[1]) then
-            imgui.SameLine(); imgui.Text("Recast");
+                if (config.settings.components.showToolNames[1]) then
+                    imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("                                   "));
+                    imgui.Text("Recast");
+            else
+                imgui.SameLine(); imgui.Text("Recast");
+            end
         end
 
         imgui.Text("         ");
         if (config.settings.components.showSpellTools[1]) then
             imgui.SameLine(); imgui.Text("Remaining  ");
         end
+
+        if (config.settings.components.showToolNames[1]) then
+            imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("                                  ")); imgui.Text("");
+        end
+
         if (config.settings.components.showRecastIchi[1]) then
             imgui.SameLine(); imgui.Text("Ichi  ");
         end
@@ -144,12 +154,18 @@ function renderNinjutsuWindow(config)
 
                 imgui.SameLine();
                 imgui.SetCursorPosX(imgui.GetCursorPosX() + imgui.CalcTextSize("      ") - imgui.CalcTextSize(spell.spellName));
-                imgui.Text("");
+                imgui.Text(" ");
                 if (config.settings.components.showSpellTools[1]) then
                     local toolsRemaining = tostring(funcs.ninjaToolsRemaining(spell.itemId));
                     imgui.SameLine();
                     imgui.Text(" [" .. toolsRemaining .. "]");
-                    imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("                      ")); imgui.Text("") 
+                    if (config.settings.components.showToolNames[1]) then
+                        imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("                  "));
+                        imgui.Text("" .. spell.itemName .. "");
+                        imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("                                  ")); imgui.Text("") 
+                    else
+                        imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("                      ")); imgui.Text("") 
+                    end
                 end
 
                 if (config.settings.components.showRecastIchi[1]) then
@@ -201,8 +217,14 @@ function renderNinjutsuWindow(config)
                 if (config.settings.components.showSpellTools[1]) then
                     local toolsRemaining = tostring(funcs.ninjaToolsRemaining(spell.itemId));
                     imgui.SameLine();
-                    imgui.Text(" [" .. toolsRemaining .. "]");
-                    imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("                      ")); imgui.Text("") 
+                    imgui.Text("[" .. toolsRemaining .. "]");
+                    if (config.settings.components.showToolNames[1]) then
+                        imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("                  "));
+                        imgui.Text("" .. spell.itemName .. "");
+                        imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("                                 ")); imgui.Text("") 
+                    else
+                        imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("                      ")); imgui.Text("") 
+                    end
                 end
     
                 if (config.settings.components.showRecastIchi[1]) then
@@ -253,6 +275,9 @@ function renderMenu(config, gdiObj)
 
                 imgui.Checkbox(' - Show tool count', config.settings.components.showSpellTools);
                 imgui.ShowHelp('Shows the tool count for elemental spells.');
+                
+                imgui.Checkbox(' - Show tool name', config.settings.components.showToolNames);
+                imgui.ShowHelp('Shows the name of the tool for each spell.');                
                 
                 imgui.Checkbox(' -- Show inoshishinofuda tools', config.settings.components.showInoTools);
                 imgui.ShowHelp('Shows the number of remaining inoshishinofuda tools.');
