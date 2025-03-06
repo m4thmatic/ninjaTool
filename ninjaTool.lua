@@ -66,6 +66,7 @@ local defaultConfig = T{
         showRecastSan    = T{false};
         showWheelArrow   = T{true};
         showSpellWhenNin = T{true};
+        hideWhenChatOpen = T{false};
         firstSpellIdx    = 1;
         showEleSpellList = T{true};
         nonEleSpellList  = T{{true},{false},{false},{false},{false},{false}};
