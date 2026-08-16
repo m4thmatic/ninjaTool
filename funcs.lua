@@ -96,8 +96,8 @@ funcs.argbToHex = function(alpha, red, green, blue)
 end
 
 --- Gets the name of the top-most menu element. (credit to/copied from XITools)
+local menuBase = ashita.memory.find('FFXiMain.dll', 0, '8B480C85C974??8B510885D274??3B05', 16, 0);
 funcs.GetMenuName = function()
-    local menuBase = ashita.memory.find('FFXiMain.dll', 0, '8B480C85C974??8B510885D274??3B05', 16, 0);
     local subPointer = ashita.memory.read_uint32(menuBase);
     local subValue = ashita.memory.read_uint32(subPointer);
     if (subValue == 0) then

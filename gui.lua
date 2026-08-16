@@ -64,6 +64,10 @@ function displayNinjutsuWindow(config)
         return false
     end
 
+    if(config.settings.components.hideWhenChatOpen[1]) then
+        return not isChatLogOpen();
+    end
+
     return true
 end
 
@@ -93,7 +97,9 @@ function renderNinjutsuWindow(config)
     imgui.PushStyleColor(ImGuiCol_Border, config.settings.spellWindow.borderColor);
     imgui.PushStyleColor(ImGuiCol_Text, config.settings.spellWindow.textColor);
     if (imgui.Begin('ninjaToolSpells', true, bit.bor(ImGuiWindowFlags_NoDecoration))) then
-        imgui.SetWindowFontScale(config.settings.spellWindow.scale[1]); -- set window scale
+		local defaultFont = imgui.GetFont();
+		local defaultFontSize = imgui.GetFontSize();
+		imgui.PushFont(defaultFont, defaultFontSize * config.settings.spellWindow.scale[1]); -- set window scale
         
         --imgui.Text("Spell     Tools       Recast");
         --imgui.Text("          Remaining   Ichi   Ni");
@@ -244,7 +250,7 @@ function renderNinjutsuWindow(config)
             end
         end
 
-        imgui.SetWindowFontScale(1.0); -- reset window scale
+		imgui.PopFont(); --reset window scale
     end
     imgui.PopStyleColor(3);
     imgui.End();
@@ -273,22 +279,29 @@ function renderMenu(config, gdiObj)
                 imgui.Checkbox('Show only when NIN', config.settings.components.showSpellWhenNin);
                 imgui.ShowHelp('Shows the GUI only when main job is set to ninja.');
 
-                imgui.Checkbox(' - Show tool count', config.settings.components.showSpellTools);
+                imgui.Checkbox('Hide when Chat is open', config.settings.components.hideWhenChatOpen);
+                imgui.ShowHelp('Hides the spell window when the chat is expanded.');
+
+                imgui.Text("")
+
+                imgui.Checkbox('Show tool count', config.settings.components.showSpellTools);
                 imgui.ShowHelp('Shows the tool count for elemental spells.');
-                
-                imgui.Checkbox(' - Show tool name', config.settings.components.showToolNames);
+
+                imgui.Checkbox('Show tool name', config.settings.components.showToolNames);
                 imgui.ShowHelp('Shows the name of the tool for each spell.');                
                 
-                imgui.Checkbox(' -- Show inoshishinofuda tools', config.settings.components.showInoTools);
+                imgui.Checkbox('Show inoshishinofuda count', config.settings.components.showInoTools);
                 imgui.ShowHelp('Shows the number of remaining inoshishinofuda tools.');
 
-                imgui.Checkbox(' - Show recast times :Ichi', config.settings.components.showRecastIchi);
+                imgui.Text("")
+
+                imgui.Checkbox('Show recast times :Ichi', config.settings.components.showRecastIchi);
                 imgui.ShowHelp('Shows Ichi recast timers.');
     
-                imgui.Checkbox(' - Show recast times :Ni', config.settings.components.showRecastNi);
+                imgui.Checkbox('Show recast times :Ni', config.settings.components.showRecastNi);
                 imgui.ShowHelp('Shows Ni recast timers.');
 
-                imgui.Checkbox(' - Show recast times :San', config.settings.components.showRecastSan);
+                imgui.Checkbox('Show recast times :San', config.settings.components.showRecastSan);
                 imgui.ShowHelp('Shows San recast timers.');
 
                 -- 
@@ -417,6 +430,12 @@ function hideWindow()
         or menuName:match('menu%s+cnqframe') ~= nil
 		or menuName:match('menu%s+dbnamese') ~= nil
 		or menuName:match('menu%s+ptc6yesn') ~= nil
+end
+
+--- Determines if the chat log is open
+function isChatLogOpen()
+    local menuName = funcs.GetMenuName();
+    return menuName:match('menu%s+fulllog')
 end
 
 return gui;
